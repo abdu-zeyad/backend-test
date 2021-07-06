@@ -23,6 +23,7 @@ const Drinks = mongoose.model("drinks", drinksSchema);
 app.get("/all", getAllDataHandler);
 app.post("/addtofav", addtofavhandler);
 app.get("/getfavdata", addfavorite);
+app.delete("/delete", deleteitem);
 //
 //handlers
 //
@@ -47,7 +48,17 @@ function addfavorite(req, res) {
     res.send(data);
   });
 }
-//
+function deleteitem(req, res) {
+  const id = req.query.id;
+  Drinks.deleteOne({ _id: id }, (err, data) => {
+    Drinks.find({}, (err, data) => {
+      res.send(data);
+    });
+  });
+  console.log(id);
+}
+//////////////////////////////
+//////////////////
 app.get("/", function (req, res) {
   res.send("Hello World");
 });
