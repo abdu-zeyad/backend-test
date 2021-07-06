@@ -24,6 +24,7 @@ app.get("/all", getAllDataHandler);
 app.post("/addtofav", addtofavhandler);
 app.get("/getfavdata", addfavorite);
 app.delete("/delete", deleteitem);
+app.put("/update", update);
 //
 //handlers
 //
@@ -56,6 +57,20 @@ function deleteitem(req, res) {
     });
   });
   console.log(id);
+}
+
+function update(req, res) {
+  const { strDrink, strDrinkThumb, id } = req.body;
+  console.log("hi");
+  Drinks.find({ _id: id }, (err, data) => {
+    data[0].strDrink = strDrink;
+    data[0].strDrinkThumb = strDrinkThumb;
+    data[0].save().then(() => {
+      Drinks.find({}, (err, data) => {
+        res.send(data);
+      });
+    });
+  });
 }
 //////////////////////////////
 //////////////////
